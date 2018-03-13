@@ -37,6 +37,7 @@ Create an Ansible playbook to rotate ssh keys. Explaination - Replacing the keys
 
 Add below mention line in hosts file.
 
+
 192.168.33.11 ansible_ssh_private_key_file=/root/.ssh/id_rsa_root
 
 now ssh to client node :
@@ -61,3 +62,6 @@ Now it will ssh by using new ssh key pair.
       line: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZG88JePf18ZDi9CzqLXqZFvjgwUfcYv1DLtFnYP/hRf342LGlI72qgXaxpxrleypb79yOEN0YGnrt7dGU9H0kSg+llR93F+EUZmVcDzgUS0WoyOsz/w3xwfua3anuRFDKVuvvQIwsWEqAGZjbVhhkV15qFIdZLAJ3iI8Vvv9hwdp3hpKjqPx3PAhpzxLGAiF00+INEiQf0HbKhjXx+SrTFyG212fRHNZlFLSVSYs916r6mSbPRYfvCAFby9Dr1x8p1ptd0FVzqwQnXQxxiVgTCKjeMgnprFHeFieLFmlj0//yKBCQfkdusi1gqjqTFVWuDStOTBnEtU9HHALOqH// root@vagrant-ubuntu-trusty-64'
       backup: yes
 ~                  
+
+
+ssh root@ip -i /root/.ssh/private-key-name
