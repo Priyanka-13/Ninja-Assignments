@@ -1,0 +1,70 @@
+Devops Ninja Program
+Ansible Assignment Day 1:
+
+Task :
+
+- Host a static website on minimum three hosts using inventory, content of static website is "Index page of Ansible assignment"Document root /opt/html
+
+
+1. Manually
+*****Command to install nginx :
+
+sudo ansible -i /etc/ansible/hosts test -s -m apt -a 'pkg=nginx state=installed’
+
+****Command to copy index.html in /opt:
+
+sudo ansible -i /etc/ansible/hosts test -m copy -a  "src=/usr/share/nginx/html/index.html dest=opt"
+
+****Logs:
+
+192.168.0.105 | SUCCESS => {
+    "changed": true,
+    "checksum": "1c2bb5993eb4f844d6586407ab43891c9549b160",
+    "dest": "/etc/nginx/sites-available/default",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "955818e1f0c6cea688e6b97cf6589ce4",
+    "mode": "0644",
+    "owner": "root",
+    "size": 3126,
+    "src": "/root/.ansible/tmp/ansible-tmp-1520144078.94-72413555804164/source",
+    "state": "file",
+    "uid": 0
+}
+
+
+
+
+
+****Command to copy default file to client server :
+
+sudo ansible -i /etc/ansible/hosts test -m copy -a  "src=/etc/ansible/default dest=/etc/nginx/sites-available" 
+
+****Logs:
+
+192.168.0.104 | SUCCESS => {
+    "changed": true,
+    "checksum": "300ad283e67a44af01dcdfbc8f07f497d28b1023",
+    "dest": "/etc/nginx/sites-available/default",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "6992a86892de1375074631ca7519d4f2",
+    "mode": "0644",
+    "owner": "root",
+    "size": 3143,
+    "src": "/root/.ansible/tmp/ansible-tmp-1519906466.01-16630840905597/source",
+    "state": "file",
+    "uid": 0
+
+***Command to restart nginx service:
+ 
+sudo ansible -i hosts test -m service -a "name=nginx state=restarted" --become
+
+****Log :
+
+192.168.0.104 | SUCCESS => {
+    "changed": true,
+    "name": "nginx",
+    "state": "started"
+}
+
