@@ -23,7 +23,7 @@ Logs-
     "state": "directory",
     "uid": 0
 }
-
+ukehfefjefhejfhejfefefefe
 Command to delete a directory :
 
 sudo ansible test -m file -a 'path=/tmp/priyanka state=absent'
