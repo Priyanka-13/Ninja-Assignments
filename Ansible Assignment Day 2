@@ -1,0 +1,116 @@
+*******************************Devops Ninja Program***********************************
+
+
+Ansible Assignment Day 2:
+
+Task :
+•	Fetch and display to STDOUT Ansible facts using the setup module.
+sudo ansible all -m setup
+
+•	Fetch and display the value of fully qualified domain name (FQDN) of each host from their Ansible facts.
+	Command:
+sudo ansible all  -m setup | grep fqdn
+
+	Logs:
+
+        "ansible_fqdn": "localhost.localdomain",
+        "ansible_fqdn": "vagrant-ubuntu-trusty-64",
+        "ohai_fqdn": "vagrant-ubuntu-trusty-64",
+
+•	 Fetch and display only the "virtual" subset of facts for each host.
+
+sudo ansible all -m setup -a 'gather_subset=virtual' |less
+
+•	Display the uptime of all hosts using the command module.
+Command-
+
+sudo ansible all -a uptime
+
+Logs :
+
+192.168.0.105 | SUCCESS | rc=0 >>
+ 16:47:40 up  7:18,  2 users,  load average: 0.08, 0.03, 0.05
+
+192.168.0.108 | SUCCESS | rc=0 >>
+ 16:47:41 up  6:41,  2 users,  load average: 0.00, 0.01, 0.05
+
+•	Ping all hosts except the 'control' host using the --limit option
+Command :
+
+ sudo ansible all -m ping --limit 'all:!centos'
+
+Logs: 
+
+192.168.33.88 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+•	Setup Java8 on the hosts in the "App" group using the apt module.
+
+Java repo:
+
+sudo ansible app -m apt_repository -a "repo=ppa:webupd8team/java state=present"
+
+** Licence of java :
+
+ sudo ansible  test -m debconf -a 'name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 value=true vt
+ype=select'
+
+Logs:
+
+192.168.1.18 | SUCCESS => {
+    "changed": false,
+    "current": {
+        "oracle-java8-installer/local": "",
+        "oracle-java8-installer/not_exist": "",
+        "shared/accepted-oracle-license-v1-1": "true",
+        "shared/error-oracle-license-v1-1": "",
+        "shared/present-oracle-license-v1-1": ""
+    },
+    "msg": ""
+}
+
+Installing java:
+
+ sudo ansible  app -m apt -a 'name=oracle-java8-installer state=latest'
+ sudo ansible  web01 -m apt -a 'name=oracle-java7-installer state=installed’
+
+
+
+•	Fetch and display the value of fully qualified domain name (FQDN) of each host from their Ansible facts.
+Command :
+
+sudo ansible all -m setup --tree /etc/facts | grep hostname
+
+Output:
+
+        "ansible_hostname": "localhost",
+
+
+
+
+
+•	Setup and enable the EPEL package repository on the hosts in the "web" group using the yum module
+
+Command :
+
+1.	sudo ansible  centos -m yum -a 'name=http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarc
+h.rpm state=present'
+
+ 2. sudo ansible centos -m yum -a 'name=epel-release state=latest'
+
+Logs:
+
+192.168.1.36 | SUCCESS => {
+    "changed": true,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: del-mirrors.extreme-ix.org\n * epel: del-mirrors.extreme-ix.org\n * extras: del-mirrors.extreme-ix.org\n * updates: del-mirrors.extreme-ix.org\nResolving Dependencies\n--> Running transaction check\n---> Package epel-release.noarch 0:7-9 will be updated\n---> Package epel-release.noarch 0:7-11 will be an update\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package                Arch             Version           Repository      Size\n================================================================================\nUpdating:\n epel-release           noarch           7-11              epel            15 k\n\nTransaction Summary\n================================================================================\nUpgrade  1 Package\n\nTotal download size: 15 k\nDownloading packages:\nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Updating   : epel-release-7-11.noarch                                     1/2 \n  Cleanup    : epel-release-7-9.noarch                                      2/2 \n  Verifying  : epel-release-7-11.noarch                                     1/2 \n  Verifying  : epel-release-7-9.noarch                                      2/2 \n\nUpdated:\n  epel-release.noarch 0:7-11                                                    \n\nComplete!\n"
+    ]
+}
+
+
